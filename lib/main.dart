@@ -1,11 +1,10 @@
-// main.dart
 import 'package:flutter/material.dart';
-import 'profile_page.dart'; // Make sure this import is correct
+import 'profile_page.dart'; 
 
 // --- Firebase Imports ---
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart'; 
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,7 +20,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // MaterialApp setup remains the same...
     return MaterialApp(
        title: 'Flutter Demo',
        debugShowCheckedModeBanner: false,
@@ -50,9 +48,7 @@ class MyApp extends StatelessWidget {
            ),
          ),
        ),
-      // Optional: Auth State Listener (Recommended for robust navigation)
-      // home: StreamBuilder<User?>( ... ),
-       home: const AuthPage(), // Keep using AuthPage as entry for now
+       home: const AuthPage(), 
      );
   }
 }
@@ -77,9 +73,8 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
   late Animation<double> _fadeAnim;
   late Animation<double> _scaleAnim;
 
-  // Firebase Instances
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -181,9 +176,6 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
                print("Error updating Auth display name: $profileError");
            }
 
-
-          // Navigate after registration and saving data
-          // Pass the data directly since we just got it from controllers
           _navigateToProfile(name, email, phone);
 
         } else {
@@ -266,8 +258,6 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
               setState(() {
                  _error = "Lỗi khi tải thông tin người dùng.";
               });
-              // Optionally navigate with default data
-              // _navigateToProfile(user.displayName ?? 'User', user.email ?? 'N/A', 'N/A');
             }
       }
   }
@@ -293,9 +283,6 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // --- Build method remains largely the same ---
-    // Ensure it uses _isLoading, _error, and calls _handleAuth
-    // Keep the SingleChildScrollView and layout structure
     return Scaffold(
       body: Center(
         child: AnimatedBuilder(
@@ -402,7 +389,7 @@ class _AuthPageState extends State<AuthPage> with SingleTickerProviderStateMixin
                     ],
                   ),
                    const SizedBox(height: 6),
-                   const Text( '© 2024 Firebase Firestore Demo', textAlign: TextAlign.center, style: TextStyle( color: Color(0xFFB0B4BA), fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.2, ), ), // Updated footer text
+                   const Text( 'Firebase Demo', textAlign: TextAlign.center, style: TextStyle( color: Color(0xFFB0B4BA), fontSize: 13, fontWeight: FontWeight.w500, letterSpacing: 0.2, ), ), // Updated footer text
                 ],
               ),
             ),

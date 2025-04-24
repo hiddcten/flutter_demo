@@ -1,9 +1,8 @@
-// lib/profile_page.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// Import your AuthPage if needed for navigation, or handle navigation differently
-import 'main.dart'; // Assuming AuthPage is in main.dart or import its file
+import 'package:cloud_functions/cloud_functions.dart';
+import 'main.dart'; 
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -35,14 +34,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      // Navigate back to AuthPage and remove all routes behind it
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => const AuthPage()),
-        (Route<dynamic> route) => false, // Remove all previous routes
+        (Route<dynamic> route) => false, 
       );
     } catch (e) {
       print("Error logging out: $e");
-      // Show a snackbar or dialog if logout fails
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Logout failed: ${e.toString()}')),
       );
@@ -69,6 +66,19 @@ class _ProfilePageState extends State<ProfilePage> {
         .collection('users')
         .doc(user.uid)
         .update({'phone': newPhone});
+  }
+
+  Future<double?> _addNumbersWithCloudFunction(num a, num b) async {
+    try {
+      final callable = FirebaseFunctions.instanceFor(region: 'asia-east2').httpsCallable('addNumbers');
+      final result = await callable.call({'a': a, 'b': b});
+      if (result.data is Map && result.data['result'] != null) {
+        return (result.data['result'] as num).toDouble();
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> _showEditDialog({
@@ -294,11 +304,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 25),
                   Center(
                     child: ElevatedButton.icon(
-                      icon: const Icon(Icons.lock_reset),
+                      icon: const Icon(Icons.lock_reset, color: Colors.white),
                       label: const Text('Đổi mật khẩu'),
                       onPressed: _showChangePasswordDialog,
                     ),
                   ),
+                  const SizedBox(height: 30),
+                  // Cloud Function demo cộng hai số
+                  const Divider(),
+                  const Text('Demo Cloud Function cộng hai số',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  _CloudAddNumbersDemo(addNumbers: _addNumbersWithCloudFunction),
                 ],
               ),
             ),
@@ -324,7 +341,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Text(
             value,
             style: theme.textTheme.bodyLarge,
-            overflow: TextOverflow.ellipsis, // Prevent long text overflow
+            overflow: TextOverflow.ellipsis, 
           ),
         ),
       ],
@@ -360,6 +377,64 @@ class _ProfilePageState extends State<ProfilePage> {
           tooltip: 'Chỉnh sửa',
           onPressed: onEdit,
         ),
+      ],
+    );
+  }
+}
+
+class _CloudAddNumbersDemo extends StatefulWidget {
+  final Future<double?> Function(num, num) addNumbers;
+
+  const _CloudAddNumbersDemo({Key? key, required this.addNumbers})
+      : super(key: key);
+
+  @override
+  State<_CloudAddNumbersDemo> createState() => _CloudAddNumbersDemoState();
+}
+
+class _CloudAddNumbersDemoState extends State<_CloudAddNumbersDemo> {
+  final TextEditingController _aController = TextEditingController();
+  final TextEditingController _bController = TextEditingController();
+  String? _result;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: _aController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Số thứ nhất'),
+        ),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _bController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(labelText: 'Số thứ hai'),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () async {
+            final a = num.tryParse(_aController.text);
+            final b = num.tryParse(_bController.text);
+            if (a != null && b != null) {
+              final result = await widget.addNumbers(a, b);
+              setState(() {
+                _result = result != null ? 'Kết quả: $result' : 'Lỗi khi gọi Cloud Function';
+              });
+            } else {
+              setState(() {
+                _result = 'Vui lòng nhập số hợp lệ';
+              });
+            }
+          },
+          child: const Text('Cộng hai số'),
+        ),
+        if (_result != null) ...[
+          const SizedBox(height: 10),
+          Text(_result!, style: const TextStyle(fontWeight: FontWeight.bold)),
+        ],
       ],
     );
   }

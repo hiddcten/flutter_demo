@@ -23,20 +23,11 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -50,20 +41,51 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAre3TCaxhF9znn5qEFCVHd8hRuTAnHQuI',
-    appId: '1:313775491917:web:4101f66262a666c38dc504',
-    messagingSenderId: '313775491917',
-    projectId: 'fir-c61da',
-    authDomain: 'fir-c61da.firebaseapp.com',
-    storageBucket: 'fir-c61da.firebasestorage.app',
-    measurementId: 'G-PVZG8WXLKM',
+    apiKey: 'AIzaSyCf2PfER1lwZZLok-RRugbNTeMUCvYhDHg',
+    appId: '1:8414776972:web:b221cfc4a411bd56cdf5a9',
+    messagingSenderId: '8414776972',
+    projectId: 'fir-demo-6a2fb',
+    authDomain: 'fir-demo-6a2fb.firebaseapp.com',
+    storageBucket: 'fir-demo-6a2fb.firebasestorage.app',
+    measurementId: 'G-50M9GSZ1X4',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBEP2wyPkkPZd8z63-EiS2a44TcpAmSzgg',
-    appId: '1:313775491917:android:0d086f2379b04cdb8dc504',
-    messagingSenderId: '313775491917',
-    projectId: 'fir-c61da',
-    storageBucket: 'fir-c61da.firebasestorage.app',
+    apiKey: 'AIzaSyCCuOoCM2z8plekNemWX4fUEsXlptflEYs',
+    appId: '1:8414776972:android:37b65101e6121dc1cdf5a9',
+    messagingSenderId: '8414776972',
+    projectId: 'fir-demo-6a2fb',
+    storageBucket: 'fir-demo-6a2fb.firebasestorage.app',
   );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyA7WwDKIWjYPN9jARj9NEKRl2YDt0ZshbA',
+    appId: '1:8414776972:ios:8a3a1158a7a76e2bcdf5a9',
+    messagingSenderId: '8414776972',
+    projectId: 'fir-demo-6a2fb',
+    storageBucket: 'fir-demo-6a2fb.firebasestorage.app',
+    iosClientId: '8414776972-qpt58r44u8gt6t6nesdcgthiqd9ag4mm.apps.googleusercontent.com',
+    iosBundleId: 'com.example.demoFirebase',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyA7WwDKIWjYPN9jARj9NEKRl2YDt0ZshbA',
+    appId: '1:8414776972:ios:8a3a1158a7a76e2bcdf5a9',
+    messagingSenderId: '8414776972',
+    projectId: 'fir-demo-6a2fb',
+    storageBucket: 'fir-demo-6a2fb.firebasestorage.app',
+    iosClientId: '8414776972-qpt58r44u8gt6t6nesdcgthiqd9ag4mm.apps.googleusercontent.com',
+    iosBundleId: 'com.example.demoFirebase',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCf2PfER1lwZZLok-RRugbNTeMUCvYhDHg',
+    appId: '1:8414776972:web:3bae790452980ad2cdf5a9',
+    messagingSenderId: '8414776972',
+    projectId: 'fir-demo-6a2fb',
+    authDomain: 'fir-demo-6a2fb.firebaseapp.com',
+    storageBucket: 'fir-demo-6a2fb.firebasestorage.app',
+    measurementId: 'G-N1W2E9QBY5',
+  );
+
 }
